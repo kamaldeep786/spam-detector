@@ -1,4 +1,4 @@
-# Core app framework
+# Core Streamlit app framework
 streamlit==1.37.1
 
 # Data handling and utilities
@@ -13,18 +13,14 @@ langchain-google-genai>=1.0.1
 # Google API client (for Gemini)
 google-generativeai>=0.6.0
 
-# For environment variables
+# For environment variables (optional for local use)
 python-dotenv==1.0.1
 
-# Optional: for logging, retries, and progress
+# Optional: for retries and progress tracking
 tenacity==8.5.0
 tqdm==4.66.5
 
-# Visualization and extras (Streamlit dependencies)
+# Visualization and Streamlit dependencies
 altair==5.3.0
 pydeck==0.9.1
-
-# Pillow for image processing (used internally by Streamlit)
 Pillow==10.3.0
-
-
