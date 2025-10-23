@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field, ValidationError
 
 # Import the latest LangChain and Google Gemini wrapper
 try:
-    from langchain.chat_models import ChatGoogleGenerativeAI
+    from langchain_google_genai import ChatGoogleGenerativeAI
     from langchain.prompts import ChatPromptTemplate
     from langchain.output_parsers import PydanticOutputParser
 except ImportError:
