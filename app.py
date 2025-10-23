@@ -34,15 +34,14 @@ def get_chain():
     format_instructions = parser.get_format_instructions()
 
     prompt = ChatPromptTemplate.from_messages([
-        ("system", "You are ScamGuard, an expert spam detector. Return ONLY a JSON object."),
-        ("system", "{format_instructions}"),
+        ("system", f"You are ScamGuard, an expert spam detector. Return ONLY a JSON object.\n{format_instructions}"),
         ("human", "Classify this message:\n\"{message}\"")
     ])
 
     llm = ChatGoogleGenerativeAI(
-        model="gemini-1.5-flash",  # or "models/gemini-1.5-flash"
-        google_api_key=os.environ.get("GOOGLE_API_KEY"),
-        temperature=0
+        model_name="gemini-2.5-chat",   # Corrected parameter
+        api_key=os.environ.get("GOOGLE_API_KEY"),  # Corrected parameter
+        temperature=0.7
     )
 
     chain = prompt | llm | parser
