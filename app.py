@@ -11,7 +11,7 @@ try:
 except ImportError:
     st.error(
         "LangChain modules not found. "
-        "Make sure you installed langchain>=0.3 and langchain-google-genai"
+        "Make sure you installed langchain>=1.1 and langchain-google-genai>=1.0.1"
     )
     raise
 
@@ -34,13 +34,17 @@ def get_chain():
     format_instructions = parser.get_format_instructions()
 
     prompt = ChatPromptTemplate.from_messages([
-        ("system", f"You are ScamGuard, an expert spam detector. Return ONLY a JSON object.\n{format_instructions}"),
+        (
+            "system",
+            f"You are ScamGuard, an expert spam detector. "
+            f"Return ONLY a JSON object following this schema:\n{format_instructions}"
+        ),
         ("human", "Classify this message:\n\"{message}\"")
     ])
 
     llm = ChatGoogleGenerativeAI(
-        model_name="gemini-2.5-chat",   # Corrected parameter
-        api_key=os.environ.get("GOOGLE_API_KEY"),  # Corrected parameter
+        model_name="gemini-2.5-chat",
+        api_key=os.environ.get("GOOGLE_API_KEY"),  # Set via Streamlit Secrets
         temperature=0.7
     )
 
