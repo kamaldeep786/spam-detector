@@ -3,13 +3,16 @@ import streamlit as st
 from typing import List, Literal
 from pydantic import BaseModel, Field, ValidationError
 
-# Import the latest LangChain and Google Gemini wrapper
+# Import LangChain + Google Gemini wrapper
 try:
     from langchain_google_genai import ChatGoogleGenerativeAI
     from langchain.prompts import ChatPromptTemplate
     from langchain.output_parsers import PydanticOutputParser
 except ImportError:
-    st.error("LangChain modules not found. Make sure you installed langchain>=0.3 and langchain-google-genai")
+    st.error(
+        "LangChain modules not found. "
+        "Make sure you installed langchain>=0.3 and langchain-google-genai"
+    )
     raise
 
 # ============================
@@ -37,7 +40,7 @@ def get_chain():
     ])
 
     llm = ChatGoogleGenerativeAI(
-        model="gemini-1.5-flash",  # If 404, try "models/gemini-1.5-flash"
+        model="gemini-1.5-flash",  # or "models/gemini-1.5-flash"
         google_api_key=os.environ.get("GOOGLE_API_KEY"),
         temperature=0
     )
@@ -56,7 +59,7 @@ def classify_message(message: str) -> SpamClassification:
     })
 
 # ======================
-# 4. Streamlit App UI
+# 4. Streamlit UI
 # ======================
 st.set_page_config(page_title="Spam Detector", page_icon="🚨")
 st.title("🚨 Spam Detector (Gemini + LangChain)")
