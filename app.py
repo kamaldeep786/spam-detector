@@ -2,9 +2,15 @@ import os
 import streamlit as st
 from typing import List, Literal
 from pydantic import BaseModel, Field, ValidationError
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import PydanticOutputParser
+
+# Import the latest LangChain and Google Gemini wrapper
+try:
+    from langchain.chat_models import ChatGoogleGenerativeAI
+    from langchain.prompts import ChatPromptTemplate
+    from langchain.output_parsers import PydanticOutputParser
+except ImportError:
+    st.error("LangChain modules not found. Make sure you installed langchain>=0.3 and langchain-google-genai")
+    raise
 
 # ============================
 # 1. Define Schema
@@ -15,7 +21,6 @@ class SpamClassification(BaseModel):
     risk_score: int = Field(..., ge=0, le=100, description="0..100 risk score")
     red_flags: List[str]
     suggested_action: str
-
 
 # =======================
 # 2. Build chain (cached)
@@ -40,7 +45,6 @@ def get_chain():
     chain = prompt | llm | parser
     return chain, format_instructions
 
-
 # ======================
 # 3. Wrapper function
 # ======================
@@ -50,7 +54,6 @@ def classify_message(message: str) -> SpamClassification:
         "format_instructions": format_instructions,
         "message": message
     })
-
 
 # ======================
 # 4. Streamlit App UI
@@ -77,10 +80,8 @@ if st.button("🔍 Classify"):
                 st.subheader("📊 Classification Result")
                 st.write("**Label:**", result.label)
                 st.write("**Risk Score:**", result.risk_score)
-                st.write("**Reasons:**")
-                st.write(result.reasons)
-                st.write("**Red Flags:**")
-                st.write(result.red_flags)
+                st.write("**Reasons:**", result.reasons)
+                st.write("**Red Flags:**", result.red_flags)
                 st.write("**Suggested Action:**", result.suggested_action)
 
                 with st.expander("🧾 Raw JSON Result"):
